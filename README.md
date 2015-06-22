@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # [Start Bootstrap](http://startbootstrap.com/) - [Small Business](http://startbootstrap.com/template-overviews/small-business/)
 
 [Small Business](http://startbootstrap.com/template-overviews/small-business/) is a responsive marketing landing page template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
@@ -24,3 +25,7 @@ Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework 
 ## Copyright and License
 
 Copyright 2013-2015 Iron Summit Media Strategies, LLC. Code released under the [Apache 2.0](https://github.com/IronSummitMedia/startbootstrap-small-business/blob/gh-pages/LICENSE) license.
+=======
+# colonypark.github.io
+Colony Park subdivision in Pickerington, Ohio
+>>>>>>> e0cd97faf2a0181a644c8063dc4fb21f068266b4
