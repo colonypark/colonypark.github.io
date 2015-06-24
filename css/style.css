@@ -8,6 +8,7 @@ body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Change if height of navigation changes. */
     font-family: 'Poiret One', cursive;
     font-weight: 400;
+    font-size: 12px;
 }
 
 .navbar-fixed-top .nav {
