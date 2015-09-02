@@ -21,6 +21,11 @@ p {
     font-size: 16px;
 }
 
+span.highlight {
+    color: #000;
+    background-color: #ffff00
+}
+
 .navbar-fixed-top .nav {
     padding: 15px 0;
 }
