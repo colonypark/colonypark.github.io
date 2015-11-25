@@ -103,7 +103,7 @@
     </div><!-- /.row -->
     <div class="row">
       <div class="col-md-12">
-        <div id="table"><div class="well" style="text-align:center;"><i>Search results appear here</i></div></div><br/>
+        <br/><div id="table"><div class="well" style="text-align:center;"><i>Search results appear here</i></div></div><br/>
         <div class="well">
           Try it out:
           <ul>
@@ -275,7 +275,7 @@
     visualization.draw(view, {legend: 'bottom', showRowNumber: true, allowHtml: true, width: '100%', height: '100%'});
     var rows = view.getViewRows();
     if (rows.length === 0)
-      $('#table').html('<strong>No matching articles found</strong>');
+      $('#table').html('<div class="well" style="text-align:center;"><strong>No matching articles found</strong></div>');
     //console.log(data.toJSON());
     //var row = data.getRowProperties(1);
     //console.log(JSON.stringify(row, null, '  '));
