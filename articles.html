@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Then & Now Article Search Demo</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Maven+Pro:500' rel='stylesheet' type='text/css'>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="css/style.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <style>
+  /* Start by setting display:none to make this hidden.
+     Then we position it in relation to the viewport window
+     with position:fixed. Width, height, top and left speak
+     for themselves. Background we set to 80% white with
+     our animation centered, and no-repeating */
+  .modal {
+      display:    none;
+      position:   fixed;
+      z-index:    1000;
+      top:        0;
+      left:       0;
+      height:     100%;
+      width:      100%;
+      background: rgba( 255, 255, 255, .8 ) 
+                  url('http://i.stack.imgur.com/FhHRx.gif') 
+                  50% 50% 
+                  no-repeat;
+  }
+
+  /* When the body has the loading class, we turn
+     the scrollbar off with overflow:hidden */
+  body.loading {
+      overflow: hidden;   
+  }
+
+  /* Anytime the body has the loading class, our
+     modal element will be visible */
+  body.loading .modal {
+      display: block;
+  }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Content Row -->
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-3">
+        <div class="input-group">
+          <label for="article_tags">Tags: </label>
+          <select id="article_tags" multiple="multiple">
+          </select>
+        </div>
+      </div><!-- /.col-md-6 -->
+      <div class="col-md-6">
+        <div class="input-group">
+          <input type="text" id="search_txt" class="form-control" placeholder="Search for..." autocomplete="off" disabled/>
+          <span class="input-group-btn ">
+            <button class="btn btn-default glyphicon glyphicon-search disabled" type="button" id="search_btn"></button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-md-6 -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Then & Now Article Search Demo</h1>
+        <div id="table"><div class="well">Placeholder for search results</div></div><br/>
+        <div class="well">
+          Try it out:
+          <ul>
+            <li>Hit the search button <span class="glyphicon glyphicon-search" aria-hidden="true"></span> to see everything</li>
+            <li>If you want to see articles of a specific tag(s), choose them from the tags dropdown menu, then click <span class="glyphicon glyphicon-search" aria-hidden="true"></span></li>
+            <li>If you are looking for specific text, just type it into the search text field (it will look in the article title and body), then click <span class="glyphicon glyphicon-search" aria-hidden="true"></span></li>
+            <li>You can also do a combination of tags and text</li>
+          </ul>
+        </div>
+        <div class="well">
+          This is a demo of an article search interface. It allows for searching full-text as well as inclusion of specific tags. Here is how it works:
+          <ol>
+            <li>The articles are hosted as online documents on Google Drive, which is free for personal or nonprofit use. The articles sharing is set so that they may be viewed by anyone with a link to it, but only edited/removed by owners.</li>
+            <li>The articles are indexed in an <a target="_blank" href="https://docs.google.com/spreadsheets/d/18OpvTmyYBpW5xJ0DhixARpkVVqz86HBZxdYezcMPl2s/pubhtml">online spreadsheet</a>, which has a little script that will update the sheet based on all of the documents in a certain online folder (for these particular articles).</li>
+            <li>This web page has a little javascript that makes use of the Google Visualization API (application programming interface) - like what you would use to make pretty charts, which is able to query the indexing spreadsheet and return matches and display them in a table. This API has no usage limits, so users can search as much as they like.
+          </ol>
+
+          A bonus feature of Google Drive is that it has built-in OCR (optical character recognition) ability, so if you upload a PDF document or Image containing text and convert it to a Google Doc, it will pull out the text.
+          <span style="float:right;">Tony Schmitt</span>
+        </div>
+        <!-- 
+        <iframe width="100%" src="https://docs.google.com/spreadsheets/d/18OpvTmyYBpW5xJ0DhixARpkVVqz86HBZxdYezcMPl2s/pubhtml?widget=true&amp;headers=false"></iframe>
+        -->
+      </div><!-- /.col-md-12 -->
+    </div><!-- /.row -->
+    
+    <!-- Footer -->
+    <footer>
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright &copy; 2015</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- jQuery -->
+  <script src="js/jquery.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+  <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+
+  <script type="text/javascript">
+  var ready = false;
+  // Load the Visualization API and the piechart package.
+  google.load('visualization', '1.0', {'packages':['table']});
+  var visualization;
+
+  $(document).ready(function() {
+    $('#article_tags').multiselect({
+      includeSelectAllOption: true,
+      selectAllValue: 'select-all-value'
+    });
+    
+    var tags = [
+      {value:"Businesses-Buildings", text:"Businesses & Buildings"},
+      {value:"Transportation-Utilities", text:"Transportation & Utilities"},
+      {value:"Government-Community-Services", text:"Government-Community-Services"},
+      {value:"Events", text:"Events"},
+      {value:"Schools", text:"Schools"},
+      {value:"Churches", text:"Churches"},
+      {value:"Sports-Culture-Recreation", text:"Sports, Culture, & Recreation"},
+      {value:"Clubs-Organizations", text:"Clubs & Organizations"},
+      {value:"Noted-Citizens", text:"Noted Citizens"}
+    ];
+    //alphabetize by text property:
+    tags.sort(function(a, b) { 
+      //return a.text - b.text;
+      return a.text.localeCompare(b.text);
+    })
+    //console.log(JSON.stringify(tags, null, '  '));
+    for(var tag in tags) {
+      var t = tags[tag];
+      //console.log(t);
+      $('#article_tags')
+        .append($("<option></option>")
+        .attr("value",t.value)
+        .text(t.text)); 
+      //$('#article_tags').append('<option value="'+t+'">'+t+'</option>');
+    }
+    $('#article_tags').multiselect('rebuild').multiselect('selectAll', true).multiselect('updateButtonText');
+
+    $('#search_btn').on('click', function(){
+      var search_text = $('#search_txt').val();
+      var tags = getTags();
+      //console.log( 'clicked on search buttton', search_text );
+      drawVisualization(search_text, tags);
+    });
+
+    $('#search_txt').keypress(function(event) {
+      if (event.keyCode == 13) {
+        var search_text = $(this).val()
+        var tags = getTags();
+        //console.log( 'hit enter in text box!', search_text );
+        drawVisualization(search_text, tags);
+      }
+    });
+
+    function getTags() {
+      var values = [];
+      $('#article_tags option').each(function() {
+        if ($(this).prop('selected')) {
+          values.push($(this).val());
+        }
+      });
+      return values;
+    }
+
+  });
+
+  function setReady() {
+    //console.log('Google Viz API is ready now!');
+    $('#search_btn').removeClass('disabled');
+    $('#search_txt').prop('disabled', false);
+    ready = true;
+  }
+
+  function drawVisualization(search_text, tags) {
+    if (!ready) {
+      alert('System not ready. Please try again later.');
+      return false;
+    }
+    //google.visualization.events.removeListener(visualization);
+    var query = new google.visualization.Query('http://spreadsheets.google.com/tq?key=18OpvTmyYBpW5xJ0DhixARpkVVqz86HBZxdYezcMPl2s&hl=en_GB');
+    var qry = 'SELECT A, C where A!=""';
+    if (search_text.length > 0) {
+      qry += ' and (';
+      qry += '(upper(A) like upper("%'+search_text+'%")) or (upper(E) contains upper("'+search_text+'"))';
+      qry += ')';
+    }
+    if (tags.length > 0) {
+      qry += ' and (';
+      tag_qry = [];
+      tags.forEach(function(t){
+        tag_qry.push('upper(B) contains upper("'+t+'")');
+      });
+      qry += tag_qry.join(' or ');
+      qry += ')';
+    }
+    qry += ' order by A asc label A "Article Name", C "URL"';
+    //console.log(qry);
+    query.setQuery(qry);
+    $("body").addClass("loading");
+    query.send(handleQueryResponse);
+  }
+
+  function handleQueryResponse(response) {
+    $("body").removeClass("loading");
+    if (response.isError()) {
+      alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+      return;
+    }
+    var data = response.getDataTable();
+    visualization = new google.visualization.Table(document.getElementById('table'));
+    var formatter = new google.visualization.PatternFormat('<a target="_blank" href="{1}">{0}</a>');
+    formatter.format(data, [0, 1]);
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0]); // Create a view with the first column only.
+    //console.log(view);
+    view.setRows(view.getFilteredRows([{column: 0, test: articleUrlTest}]));
+    visualization.draw(view, {legend: 'bottom', showRowNumber: true, allowHtml: true, width: '100%', height: '100%'});
+    var rows = view.getViewRows();
+    if (rows.length === 0)
+      $('#table').html('<strong>No matching articles found</strong>');
+    //console.log(data.toJSON());
+    //var row = data.getRowProperties(1);
+    //console.log(JSON.stringify(row, null, '  '));
+    //google.visualization.events.addListener(visualization, 'select', selectHandler);
+    //google.visualization.events.trigger(visualization, 'selectedRow', {message: "hello"});
+  }
+
+  // Don't show the current page in the view used by the data table
+  function articleUrlTest(value, row, column, table) {
+    if (value.indexOf('File Name') > -1)
+      return false;
+    return true;
+  }
+
+  function selectHandler() {
+    //var rowIndex = getTableRowIndex();
+    //var data = getRowProperty();
+    var selection = visualization.getSelection();
+    var message = '';
+    for (var i = 0; i < selection.length; i++) {
+      var item = selection[i];
+      if (item.row != null && item.column != null) {
+        message += '{row:' + item.row + ',column:' + item.column + '}';
+      } else if (item.row != null) {
+        message += '{row:' + item.row + '}';
+        console.log(visualization.getRowProperty(item.row, 'URL'));
+      } else if (item.column != null) {
+        message += '{column:' + item.column + '}';
+      }
+    }
+    if (message == '') {
+      message = 'nothing';
+    }
+    console.log( 'A table row was selected', message );
+  }
+
+  google.setOnLoadCallback(setReady);
+  </script>
+
+  <div class="modal"><!-- Place at bottom of page --></div>
+
+</body>
+
+</html>
