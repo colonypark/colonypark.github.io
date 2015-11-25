@@ -79,6 +79,11 @@
   <div class="container">
 
     <!-- Content Row -->
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Then & Now Article Search Demo</h1>
+      </div>
+    </div>
     <div class="row search-group">
       <div class="col-md-6">
         <div class="input-group">
@@ -98,7 +103,6 @@
     </div><!-- /.row -->
     <div class="row">
       <div class="col-md-12">
-        <h1>Then & Now Article Search Demo</h1>
         <div id="table"><div class="well" style="text-align:center;"><i>Search results appear here</i></div></div><br/>
         <div class="well">
           Try it out:
@@ -176,8 +180,9 @@
     tags.sort(function(a, b) { 
       //return a.text - b.text;
       return a.text.localeCompare(b.text);
-    })
+    });
     //console.log(JSON.stringify(tags, null, '  '));
+    //$('#article_tags').toggle();
     for(var tag in tags) {
       var t = tags[tag];
       //console.log(t);
