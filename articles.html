@@ -59,6 +59,16 @@
   body.loading .modal {
       display: block;
   }
+
+  div.search-controls {
+    background-color: #ddd;
+  }
+
+  div.search-group {
+    border-radius: 25px;
+    border: 2px solid #ccc;
+    padding: 20px; 
+  }
   </style>
 
 </head>
@@ -69,15 +79,15 @@
   <div class="container">
 
     <!-- Content Row -->
-    <div class="row">
-      <div class="col-md-6">
+    <div class="row search-group">
+      <div class="col-md-6 search-controls">
         <div class="input-group">
           <label for="article_tags">Tags: </label>
           <select id="article_tags" multiple="multiple">
           </select>
         </div>
       </div><!-- /.col-md-6 -->
-      <div class="col-md-6">
+      <div class="col-md-6 search-controls">
         <div class="input-group">
           <input type="text" id="search_txt" class="form-control" placeholder="Search titles & text for..." autocomplete="off" disabled/>
           <span class="input-group-btn ">
